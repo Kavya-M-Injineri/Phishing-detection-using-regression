@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Results — PhishGuard AI{% endblock %}
+{% block page_id %}results{% endblock %}
+
+{% block content %}
+<div class="page-header text-center">
+    <h1><i class="fas fa-clipboard-check"></i> Prediction Results</h1>
+    <p>Your phishing risk analysis results</p>
+</div>
+
+<div class="glass-card result-card">
+    <!-- Risk Gauge -->
+    <div class="risk-gauge">
+        <svg viewBox="0 0 200 200">
+            <circle class="gauge-bg" cx="100" cy="100" r="90" />
+            <circle class="gauge-fill" id="gauge-fill" cx="100" cy="100" r="90" />
+        </svg>
+        <div class="gauge-value">
+            <div class="score-number" id="score-number">—</div>
+            <div class="score-label">Risk Score</div>
+        </div>
+    </div>
+
+    <div id="status-badge" class="status-badge safe">Loading...</div>
+
+    <p style="color:var(--text-secondary);margin-top:16px;">
+        The TensorFlow model analyzed 48 URL features to generate this phishing risk probability.
+        Scores above 70% indicate high phishing risk, 40-70% is suspicious, and below 40% is likely legitimate.
+    </p>
+
+    <div class="flex justify-center gap-2 mt-3">
+        <a href="/predict" class="btn btn-primary">
+            <i class="fas fa-redo"></i> New Prediction
+        </a>
+        <a href="/analytics" class="btn btn-secondary">
+            <i class="fas fa-chart-bar"></i> View Analytics
+        </a>
+        <a href="/dashboard" class="btn btn-secondary">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- Risk Level Guide -->
+<div class="glass-card mt-4" style="max-width:600px;margin-left:auto;margin-right:auto;">
+    <h3 class="mb-2"><i class="fas fa-info-circle" style="color:var(--accent-cyan)"></i> Risk Level Guide</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Score Range</th>
+                <th>Status</th>
+                <th>Recommendation</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0% — 39%</td>
+                <td><span class="status-badge safe" style="padding:4px 12px;font-size:0.75rem">Legitimate</span></td>
+                <td style="color:var(--text-secondary)">URL appears safe</td>
+            </tr>
+            <tr>
+                <td>40% — 69%</td>
+                <td><span class="status-badge warning" style="padding:4px 12px;font-size:0.75rem">Suspicious</span></td>
+                <td style="color:var(--text-secondary)">Exercise caution</td>
+            </tr>
+            <tr>
+                <td>70% — 100%</td>
+                <td><span class="status-badge danger" style="padding:4px 12px;font-size:0.75rem">Phishing</span></td>
+                <td style="color:var(--text-secondary)">Avoid this URL</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

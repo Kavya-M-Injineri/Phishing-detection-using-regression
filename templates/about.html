@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+{% block title %}About — PhishGuard AI{% endblock %}
+{% block page_id %}about{% endblock %}
+
+{% block content %}
+<div class="page-header text-center">
+    <h1><i class="fas fa-shield-alt"></i> About PhishGuard AI</h1>
+    <p>Intelligent phishing detection powered by deep learning</p>
+</div>
+
+<!-- Hero Section -->
+<div class="glass-card text-center mb-4">
+    <h2 style="font-size:1.5rem;margin-bottom:12px;">
+        Protecting Users from <span style="color:var(--accent-rose)">Phishing Attacks</span> with AI
+    </h2>
+    <p style="color:var(--text-secondary);max-width:700px;margin:0 auto;line-height:1.8;">
+        PhishGuard AI uses a TensorFlow/Keras deep learning model trained on 10,000 URLs
+        with 48 carefully engineered features to detect phishing attempts with high accuracy.
+        Our regression model provides a continuous risk score, enabling nuanced threat assessment
+        rather than simple binary classification.
+    </p>
+</div>
+
+<!-- Features Grid -->
+<h2 class="text-center mb-3"><i class="fas fa-star" style="color:var(--accent-amber)"></i> Key Features</h2>
+<div class="about-grid stagger mb-4">
+    <div class="glass-card feature-card">
+        <div class="feature-icon" style="background:rgba(167,139,250,0.15);color:var(--accent-purple);">
+            <i class="fas fa-brain"></i>
+        </div>
+        <h3>Deep Learning Model</h3>
+        <p>TensorFlow/Keras neural network with 4 dense layers, batch normalization, and dropout for robust predictions.
+        </p>
+    </div>
+
+    <div class="glass-card feature-card">
+        <div class="feature-icon" style="background:rgba(103,232,249,0.15);color:var(--accent-cyan);">
+            <i class="fas fa-lock"></i>
+        </div>
+        <h3>JWT Authentication</h3>
+        <p>Secure login system with password hashing, token-based auth, and role-based access control.</p>
+    </div>
+
+    <div class="glass-card feature-card">
+        <div class="feature-icon" style="background:rgba(240,171,252,0.15);color:var(--accent-pink);">
+            <i class="fas fa-chart-bar"></i>
+        </div>
+        <h3>Interactive Analytics</h3>
+        <p>Feature importance charts, training history, class distribution, and downloadable model assets.</p>
+    </div>
+
+    <div class="glass-card feature-card">
+        <div class="feature-icon" style="background:rgba(134,239,172,0.15);color:var(--accent-green);">
+            <i class="fas fa-file-csv"></i>
+        </div>
+        <h3>Batch Prediction</h3>
+        <p>Upload CSV files to analyze multiple URLs at once with detailed summary statistics.</p>
+    </div>
+
+    <div class="glass-card feature-card">
+        <div class="feature-icon" style="background:rgba(252,211,77,0.15);color:var(--accent-amber);">
+            <i class="fas fa-stopwatch"></i>
+        </div>
+        <h3>Early Stopping</h3>
+        <p>Smart training with early stopping (patience=5) to prevent overfitting and restore best weights.</p>
+    </div>
+
+    <div class="glass-card feature-card">
+        <div class="feature-icon" style="background:rgba(253,164,175,0.15);color:var(--accent-rose);">
+            <i class="fas fa-tachometer-alt"></i>
+        </div>
+        <h3>Real-Time Scoring</h3>
+        <p>Instant phishing risk assessment with animated gauge visualization and clear status indicators.</p>
+    </div>
+</div>
+
+<!-- Technology Stack -->
+<div class="glass-card mb-4">
+    <h3 class="mb-2"><i class="fas fa-code" style="color:var(--accent-cyan)"></i> Technology Stack</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Technology</th>
+                <th>Purpose</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Backend</td>
+                <td style="color:var(--accent-purple)">Flask</td>
+                <td>REST API & template rendering</td>
+            </tr>
+            <tr>
+                <td>ML Engine</td>
+                <td style="color:var(--accent-cyan)">TensorFlow / Keras</td>
+                <td>Regression model training & inference</td>
+            </tr>
+            <tr>
+                <td>Auth</td>
+                <td style="color:var(--accent-green)">PyJWT + Werkzeug</td>
+                <td>JWT tokens & password hashing</td>
+            </tr>
+            <tr>
+                <td>Data</td>
+                <td style="color:var(--accent-amber)">Pandas + Scikit-learn</td>
+                <td>Data processing & feature scaling</td>
+            </tr>
+            <tr>
+                <td>Database</td>
+                <td style="color:var(--accent-pink)">SQLite</td>
+                <td>User accounts storage</td>
+            </tr>
+            <tr>
+                <td>Charts</td>
+                <td style="color:var(--accent-rose)">Chart.js</td>
+                <td>Interactive data visualization</td>
+            </tr>
+            <tr>
+                <td>Frontend</td>
+                <td style="color:var(--accent-blue)">HTML/CSS/JS</td>
+                <td>Dark pastel responsive UI</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Model Architecture -->
+<div class="glass-card mb-4">
+    <h3 class="mb-2"><i class="fas fa-project-diagram" style="color:var(--accent-purple)"></i> Model Architecture</h3>
+    <div
+        style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--text-secondary);background:var(--bg-input);border-radius:var(--radius-md);padding:20px;line-height:1.8;overflow-x:auto;">
+        Input (48 features)<br>
+        &nbsp;&nbsp;↓<br>
+        Dense(128, relu) + BatchNorm + Dropout(0.3)<br>
+        &nbsp;&nbsp;↓<br>
+        Dense(64, relu) + BatchNorm + Dropout(0.2)<br>
+        &nbsp;&nbsp;↓<br>
+        Dense(32, relu) + Dropout(0.1)<br>
+        &nbsp;&nbsp;↓<br>
+        Dense(1, sigmoid) → Phishing Probability [0, 1]
+    </div>
+</div>
+
+<!-- Training Details -->
+<div class="glass-card mb-4">
+    <h3 class="mb-2"><i class="fas fa-cogs" style="color:var(--accent-amber)"></i> Training Configuration</h3>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon purple"><i class="fas fa-layer-group"></i></div>
+            <div class="stat-value">20</div>
+            <div class="stat-label">Max Epochs</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon cyan"><i class="fas fa-boxes"></i></div>
+            <div class="stat-value">64</div>
+            <div class="stat-label">Batch Size</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-divide"></i></div>
+            <div class="stat-value">80/20</div>
+            <div class="stat-label">Train/Test Split</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon amber"><i class="fas fa-hand-paper"></i></div>
+            <div class="stat-value">5</div>
+            <div class="stat-label">Early Stop Patience</div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact / Help -->
+<div class="glass-card mb-4">
+    <h3 class="mb-2"><i class="fas fa-question-circle" style="color:var(--accent-green)"></i> Help & FAQ</h3>
+
+    <details style="margin-bottom:12px;">
+        <summary style="cursor:pointer;color:var(--accent-purple);font-weight:600;padding:8px 0;">
+            How do I make a prediction?
+        </summary>
+        <p style="color:var(--text-secondary);padding:8px 0 8px 16px;line-height:1.6;">
+            Navigate to the <strong>Predict</strong> page, enter the 48 URL features in the form, and click "Analyze
+            Phishing Risk". You'll see a risk gauge showing the probability that the URL is a phishing attempt.
+        </p>
+    </details>
+
+    <details style="margin-bottom:12px;">
+        <summary style="cursor:pointer;color:var(--accent-purple);font-weight:600;padding:8px 0;">
+            What do the risk scores mean?
+        </summary>
+        <p style="color:var(--text-secondary);padding:8px 0 8px 16px;line-height:1.6;">
+            Scores below 40% indicate a legitimate URL, 40-70% is suspicious, and above 70% is likely phishing. The
+            model outputs a continuous probability, giving you nuanced risk assessment.
+        </p>
+    </details>
+
+    <details style="margin-bottom:12px;">
+        <summary style="cursor:pointer;color:var(--accent-purple);font-weight:600;padding:8px 0;">
+            How do I use batch prediction?
+        </summary>
+        <p style="color:var(--text-secondary);padding:8px 0 8px 16px;line-height:1.6;">
+            On the Predict page, switch to the "Batch Upload" tab. Upload a CSV file with the 48 feature columns and the
+            system will return predictions for all rows.
+        </p>
+    </details>
+
+    <details style="margin-bottom:12px;">
+        <summary style="cursor:pointer;color:var(--accent-purple);font-weight:600;padding:8px 0;">
+            How is the model trained?
+        </summary>
+        <p style="color:var(--text-secondary);padding:8px 0 8px 16px;line-height:1.6;">
+            The model is a TensorFlow/Keras neural network trained on 10,000 labeled URLs (5,000 phishing, 5,000
+            legitimate) with 48 features. It uses early stopping with patience=5 to prevent overfitting, training for up
+            to 20 epochs.
+        </p>
+    </details>
+</div>
+
+<!-- Contact -->
+<div class="glass-card text-center">
+    <h3 class="mb-2"><i class="fas fa-envelope" style="color:var(--accent-pink)"></i> Contact</h3>
+    <p style="color:var(--text-secondary);margin-bottom:16px;">
+        Have questions or feedback? Reach out to us!
+    </p>
+    <p style="color:var(--accent-purple);font-weight:600;">
+        <i class="fas fa-envelope"></i> support@phishguard-ai.dev
+    </p>
+</div>
+{% endblock %}

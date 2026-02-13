@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Analytics — PhishGuard AI{% endblock %}
+{% block page_id %}analytics{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-chart-line"></i> Model Analytics</h1>
+    <p>Explore dataset insights, feature importance, and training performance metrics.</p>
+</div>
+
+<!-- Quick Stats -->
+<div class="stats-grid stagger mb-3">
+    <div class="stat-card">
+        <div class="stat-icon purple"><i class="fas fa-database"></i></div>
+        <div class="stat-value" id="total-samples">—</div>
+        <div class="stat-label">Total Samples</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon cyan"><i class="fas fa-brain"></i></div>
+        <div class="stat-value" id="num-features">48</div>
+        <div class="stat-label">Features Used</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green"><i class="fas fa-bullseye"></i></div>
+        <div class="stat-value" id="model-accuracy">—</div>
+        <div class="stat-label">Best Accuracy</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon amber"><i class="fas fa-stopwatch"></i></div>
+        <div class="stat-value" id="epochs-trained">—</div>
+        <div class="stat-label">Epochs Trained</div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="charts-grid">
+    <!-- Feature Importance -->
+    <div class="chart-container">
+        <h3><i class="fas fa-sort-amount-down" style="color:var(--accent-purple)"></i> Top 15 Feature Importance</h3>
+        <p style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:12px;">
+            Features ranked by their impact on model accuracy (permutation importance)
+        </p>
+        <div class="chart-wrapper" style="height:450px;">
+            <canvas id="feature-importance-chart"></canvas>
+        </div>
+    </div>
+
+    <!-- Class Distribution -->
+    <div class="chart-container">
+        <h3><i class="fas fa-chart-pie" style="color:var(--accent-pink)"></i> Class Distribution</h3>
+        <p style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:12px;">
+            Balance between legitimate and phishing samples in the dataset
+        </p>
+        <div class="chart-wrapper" style="height:350px;">
+            <canvas id="class-distribution-chart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="charts-grid mt-3">
+    <!-- Training Loss -->
+    <div class="chart-container">
+        <h3><i class="fas fa-chart-area" style="color:var(--accent-cyan)"></i> Training & Validation Loss</h3>
+        <p style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:12px;">
+            Loss curves showing model convergence with early stopping
+        </p>
+        <div class="chart-wrapper" style="height:350px;">
+            <canvas id="training-history-chart"></canvas>
+        </div>
+    </div>
+
+    <!-- Accuracy History -->
+    <div class="chart-container">
+        <h3><i class="fas fa-trophy" style="color:var(--accent-green)"></i> Training & Validation Accuracy</h3>
+        <p style="color:var(--text-secondary);font-size:0.8rem;margin-bottom:12px;">
+            Accuracy progression over training epochs
+        </p>
+        <div class="chart-wrapper" style="height:350px;">
+            <canvas id="auc-history-chart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Download Section -->
+<div class="glass-card mt-4">
+    <h3 class="mb-2"><i class="fas fa-download" style="color:var(--accent-amber)"></i> Downloads</h3>
+    <p style="color:var(--text-secondary);margin-bottom:16px;">
+        Download the trained model or dataset resources.
+    </p>
+    <div class="flex gap-2" style="flex-wrap:wrap;">
+        <button class="btn btn-secondary" onclick="downloadModel()">
+            <i class="fas fa-file-archive"></i> Download Model (.h5)
+        </button>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Update analytics stats from API data
+    async function updateAnalyticsStats() {
+        try {
+            const data = await apiCall('/api/analytics');
+            if (data && data.analytics) {
+                const a = data.analytics;
+                updateElement('total-samples', a.dataset?.total_samples?.toLocaleString());
+                updateElement('num-features', a.dataset?.num_features);
+
+                if (a.training_history) {
+                    const acc = a.training_history.val_accuracy;
+                    if (acc && acc.length > 0) {
+                        updateElement('model-accuracy', (Math.max(...acc) * 100).toFixed(1) + '%');
+                    }
+                    updateElement('epochs-trained', a.training_history.epochs_trained);
+                }
+            }
+        } catch (e) {
+            console.error('Stats update error:', e);
+        }
+    }
+
+    function downloadModel() {
+        const token = getToken();
+        if (!token) {
+            showToast('Please login first', 'warning');
+            return;
+        }
+        window.open(`/api/download-model?token=${token}`, '_blank');
+    }
+
+    document.addEventListener('DOMContentLoaded', updateAnalyticsStats);
+</script>
+{% endblock %}

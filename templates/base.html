@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PhishGuard AI — Intelligent Phishing Detection powered by TensorFlow">
+    <title>{% block title %}PhishGuard AI{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- App CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block head %}{% endblock %}
+</head>
+<body data-page="{% block page_id %}{% endblock %}">
+
+    {% block navbar %}
+    <!-- Navigation -->
+    <nav class="navbar" id="main-navbar">
+        <a href="/dashboard" class="nav-brand">
+            <div class="brand-icon">🛡️</div>
+            <span>PhishGuard <span style="color: var(--accent-cyan)">AI</span></span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="/dashboard" id="nav-dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="/predict" id="nav-predict"><i class="fas fa-search"></i> Predict</a></li>
+            <li><a href="/analytics" id="nav-analytics"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            <li><a href="/about" id="nav-about"><i class="fas fa-info-circle"></i> About</a></li>
+        </ul>
+
+        <div class="nav-user">
+            <span class="user-badge" id="nav-user-badge">Guest</span>
+            <button class="btn btn-sm btn-secondary" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+    {% endblock %}
+
+    <!-- Main Content -->
+    <main class="main-content page-enter">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- App JS -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
