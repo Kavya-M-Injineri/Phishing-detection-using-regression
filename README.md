@@ -1,78 +1,88 @@
-# Phishing Detection using Regression
+# Phishing URL Detection — Neural Network Risk Scorer
 
-This project is a comprehensive web application designed to detect phishing URLs using machine learning. It features a Flask backend, a user-friendly frontend, and a TensorFlow/Keras regression model that predicts the likelihood of a URL being a phishing attempt.
+A full-stack web application that detects phishing URLs using a **TensorFlow regression model**, outputting a continuous 0–100% risk score rather than a binary label — enabling nuanced threat triage across single URLs and bulk CSV uploads.
 
-## Project Overview
+---
 
-The application analyzes URLs based on 48 specific features extracted from them. Instead of a simple "safe" or "phishing" classification, the model provides a continuous risk score (0 to 100%), allowing for more nuanced threat assessment.
+## Highlights
 
-Key features include:
--   **User Authentication**: Secure signup and login system to protect access.
--   **Real-time Prediction**: Analyze individual URLs instantly.
--   **Batch Processing**: Upload CSV files to analyze multiple URLs at once.
--   **Analytics Dashboard**: Visual insights into the dataset and model performance.
--   **Responsive Design**: A modern, dark-themed interface that works on all devices.
+- Trained a **Keras regression neural network** on 48 URL-derived features from `Phishing_Legitimate_full.csv`, predicting phishing likelihood as a continuous risk score instead of a binary classifier — allowing threshold tuning for different security tolerances
+- Built a **feature preprocessing pipeline** with Scikit-learn scalers saved alongside the model (`saved_model/`) ensuring identical transformations at inference time as during training
+- Implemented **JWT authentication** with SQLite-backed user management — signup, login, and protected prediction routes via Flask
+- Developed **batch prediction** support — users upload a CSV, all URLs are scored in bulk, and results are returned with per-row risk percentages
+- Built an **analytics dashboard** with Chart.js visualizations showing feature importance rankings and model training history (loss curves across epochs)
 
-## Getting Started
+---
 
-Follow these instructions to set up and run the project on your local machine.
+## Tech Stack
 
-### Prerequisites
+| Layer | Technology |
+|---|---|
+| ML Model | TensorFlow, Keras (regression) |
+| Feature Engineering | Scikit-learn, Pandas (48 features) |
+| Backend | Flask, Python 3.11 |
+| Auth | JWT + SQLite |
+| Frontend | HTML, CSS, JavaScript |
+| Visualization | Chart.js |
 
-Ensure you have Python installed on your system. This project was built using Python 3.11.
+---
 
-### Installation
+## Model Design
 
-1.  Clone the repository or download the source code.
-2.  Navigate to the project directory in your terminal.
-3.  Install the required dependencies:
+- **Input:** 48 URL features (lexical, domain, path, query characteristics)
+- **Architecture:** Dense neural network with regression output (sigmoid → 0–1 scaled to 0–100%)
+- **Training:** Up to 20 epochs with early stopping, scaler fitted on training data
+- **Outputs saved:** `saved_model/model.h5` + `saved_model/scaler.pkl`
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+---
 
-### Training the Model
-
-Before running the application, you need to train the machine learning model. The project includes a dedicated script for this:
+## Setup
 
 ```bash
+pip install -r requirements.txt
+
+# Train the model (required before running the app)
 python train_model.py
-```
+# → Loads Phishing_Legitimate_full.csv
+# → Trains for up to 20 epochs
+# → Saves model + scaler to saved_model/
 
-This script will:
--   Load the dataset (`Phishing_Legitimate_full.csv`).
--   Train the neural network for up to 20 epochs.
--   Save the trained model and feature scaler to the `saved_model/` directory.
-
-### Running the Application
-
-Once the model is trained, you can start the web server:
-
-```bash
+# Run the app
 python app.py
+# http://localhost:5000
 ```
 
-The application will be accessible at `http://localhost:5000` in your web browser.
+---
 
-## Usage Guide
+## Features
 
-1.  **Register**: Create a new account on the Signup page.
-2.  **Login**: Access your dashboard using your credentials.
-3.  **Dashboard**: monitor the system status and view dataset statistics.
-4.  **Predict**:
-    -   Go to the "Predict" page.
-    -   Enter the URL features manually to get a risk score.
-    -   Or switch to "Batch Upload" to process a CSV file.
-5.  **Analytics**: Explore the "Analytics" page to see which features contribute most to phishing detection and review the model's training history.
+- **Single URL prediction** — enter URL features manually, get instant risk score
+- **Batch prediction** — upload CSV, receive per-row phishing probability
+- **Analytics page** — feature importance chart + training loss history
+- **Auth-protected dashboard** — JWT login required to access predictions
 
-## Technologies Used
+---
 
--   **Backend**: Flask (Python)
--   **Machine Learning**: TensorFlow, Keras, Scikit-learn, Pandas
--   **Frontend**: HTML, CSS, JavaScript (Chart.js for visualizations)
--   **Database**: SQLite (for user management)
--   **Authentication**: JSON Web Tokens (JWT)
+## Project Structure
 
-## License
+```
+├── train_model.py           # Training pipeline — data load, fit, save
+├── app.py                   # Flask server — routes, auth, prediction API
+├── saved_model/
+│   ├── model.h5             # Trained Keras regression model
+│   └── scaler.pkl           # Fitted Scikit-learn feature scaler
+├── Phishing_Legitimate_full.csv   # Training dataset (48 features)
+└── templates/               # Frontend — dashboard, predict, analytics
+```
 
-This project is open-source and available for educational and research purposes.
+---
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/auth/signup` | Register user |
+| `POST` | `/api/auth/login` | Login, returns JWT |
+| `POST` | `/api/predict` | Score a single URL feature vector |
+| `POST` | `/api/predict/batch` | Upload CSV, returns risk scores per row |
+| `GET` | `/api/analytics` | Feature importance + training history |
